@@ -26,7 +26,17 @@ class Scratch3DobotLite {
                             defaultValue: "hello"
                         }
                     }
-                }
+                },
+                {
+                    opcode: 'connect',
+                    text: 'connect',
+                    blockType: BlockType.COMMAND,
+                },
+                {
+                    opcode: 'home',
+                    text: 'home',
+                    blockType: BlockType.COMMAND,
+                },
             ],
             menus: {
             }
@@ -38,6 +48,14 @@ class Scratch3DobotLite {
         log.log(text);
         httpClient.getHttpResponse();
     }
+    connect () {
+        httpClient.getHttpResponse('connect');
+    }
+    home () {
+        httpClient.getHttpResponse('home');
+    }
+
+
 }
 
 class MyHTTPClient {
@@ -46,11 +64,11 @@ class MyHTTPClient {
   }
 
   // HTTPリクエストを送信するメソッド
-  sendHttpRequest(callback) {
+  sendHttpRequest(path,callback) {
     const options = {
       hostname: 'localhost', // リクエストを送信するホスト名
       port: 3000, // ポート番号（80はHTTPのデフォルト）
-      path: '/hello', // リクエストするパス
+      path: path, // リクエストするパス
       method: 'GET' // HTTPメソッド（GET、POSTなど）
     };
 
@@ -74,12 +92,21 @@ class MyHTTPClient {
   }
   
   // レスポンスを取得するメソッド
-  getHttpResponse() {
-    this.sendHttpRequest((response) => {
-      // レスポンスデータを利用するコードをここに追加
-      console.log(response); // レスポンスデータをコンソールに出力など
-    });
+  getHttpResponse(action) {
+    if (action == "connect"){
+      this.sendHttpRequest('/connect',(response) => {
+        // レスポンスデータを利用するコードをここに追加
+        console.log(response); // レスポンスデータをコンソールに出力など
+      });
+    }
+    if (action == "home"){
+      this.sendHttpRequest('/home',(response) => {
+        // レスポンスデータを利用するコードをここに追加
+        console.log(response); // レスポンスデータをコンソールに出力など
+      });
+    }
   }
+
 }
 
 // クラスのインスタンスを作成
